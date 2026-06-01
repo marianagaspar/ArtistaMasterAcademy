@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artista Master Academy — Escola de Nail Art</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+/* ========================================
+   ARTISTA NAIL PRO — style.css
+   Paleta: nude rosé, dourado, branco marfim
+   Fontes: Cormorant Garamond + DM Sans
+======================================== */
+
+/* === TOKENS / VARIÁVEIS === */
+/* Skeleton loader para cursos */
+.skeleton-card {
+  background: var(--cor-branco);
+  border-radius: var(--radius-md);
+  height: 340px;
+  box-shadow: var(--sombra-suave);
+  overflow: hidden;
+  position: relative;
+}
+.skeleton-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Evita FOUC - esconde até o CSS estar pronto */
+html { visibility: hidden; }
+html.fonts-loaded { visibility: visible; }
+
+:root {
+  --cor-fundo:       #fdf8f5;
+  --cor-fundo-2:     #f9f1ec;
+  --cor-texto:       #2d1f1a;
+  --cor-texto-soft:  #7a5c52;
+  --cor-rose:        #c9897a;
+  --cor-rose-light:  #e8c5bc;
+  --cor-dourado:     #c8a96e;
+  --cor-dourado-light: #e8d9bb;
+  --cor-branco:      #ffffff;
+  --cor-borda:       #e8d9d0;
+
+  --fonte-display:   'Cormorant Garamond', Georgia, serif;
+  --fonte-body:      'DM Sans', sans-serif;
+
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   32px;
+  --radius-full: 9999px;
+
+  --sombra-suave: 0 4px 24px rgba(180, 120, 100, 0.10);
+  --sombra-media: 0 8px 40px rgba(180, 120, 100, 0.16);
+
+  --trans: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === RESET & BASE === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte-body);
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* === CONTAINER === */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* === TIPOGRAFIA === */
+h1, h2, h3 {
+  font-family: var(--fonte-display);
+  font-weight: 300;
+  line-height: 1.15;
+}
+em { font-style: italic; color: var(--cor-rose); }
+
+/* === BOTÕES === */
+.btn {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: var(--radius-full);
+  font-family: var(--fonte-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: var(--trans);
+  white-space: nowrap;
+}
+.btn--primary {
+  background: var(--cor-rose);
+  color: var(--cor-branco);
+  box-shadow: 0 4px 20px rgba(201, 137, 122, 0.35);
+}
+.btn--primary:hover {
+  background: #b87767;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(201, 137, 122, 0.45);
+}
+.btn--ghost {
+  border: 1.5px solid var(--cor-rose);
+  color: var(--cor-rose);
+}
+.btn--ghost:hover {
+  background: var(--cor-rose-light);
+  transform: translateY(-2px);
+}
+
+/* === INPUTS === */
+.input {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1.5px solid var(--cor-borda);
+  border-radius: var(--radius-full);
+  background: var(--cor-branco);
+  font-family: var(--fonte-body);
+  font-size: 0.9rem;
+  color: var(--cor-texto);
+  transition: var(--trans);
+  outline: none;
+}
+.input:focus {
+  border-color: var(--cor-rose);
+  box-shadow: 0 0 0 3px rgba(201, 137, 122, 0.12);
+}
+.input::placeholder { color: var(--cor-texto-soft); opacity: 0.7; }
+
+/* ==========================================
+   HEADER
+========================================== */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0;
+  transition: var(--trans);
+}
+.header.scrolled {
+  background: rgba(253, 248, 245, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(180, 120, 100, 0.10);
+}
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--fonte-display);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+.logo__symbol {
+  font-size: 1.4rem;
+  color: var(--cor-dourado);
+  animation: spin-slow 8s linear infinite;
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.logo__text em { font-size: 1rem; }
+
+/* NAV */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.nav__link {
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--cor-texto-soft);
+  transition: var(--trans);
+  position: relative;
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0; height: 1px;
+  background: var(--cor-rose);
+  transition: var(--trans);
+}
+.nav__link:hover { color: var(--cor-rose); }
+.nav__link:hover::after { width: 100%; }
+.nav__link--cta {
+  background: var(--cor-rose);
+  color: var(--cor-branco) !important;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+}
+.nav__link--cta::after { display: none; }
+.nav__link--cta:hover { background: #b87767; transform: translateY(-1px); }
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--cor-texto);
+  border-radius: 2px;
+  transition: var(--trans);
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ==========================================
+   HERO
+========================================== */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fdf8f5 0%, #f5e8e0 60%, #ecddd6 100%);
+  padding-top: 80px;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(200, 169, 110, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 20% 80%, rgba(201, 137, 122, 0.10) 0%, transparent 60%);
+}
+.hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 600px;
+}
+.hero__eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cor-dourado);
+  margin-bottom: 16px;
+}
+.hero__title {
+  font-size: clamp(3rem, 9vw, 6rem);
+  margin-bottom: 20px;
+  color: var(--cor-texto);
+}
+.hero__sub {
+  font-size: 1rem;
+  color: var(--cor-texto-soft);
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+.hero__actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Decorações hero */
+.hero__deco { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 137, 122, 0.2);
+}
+.deco-circle--1 {
+  width: 400px; height: 400px;
+  top: -100px; right: -100px;
+  animation: float 8s ease-in-out infinite;
+}
+.deco-circle--2 {
+  width: 250px; height: 250px;
+  bottom: 60px; left: -60px;
+  border-color: rgba(200, 169, 110, 0.15);
+  animation: float 10s ease-in-out infinite reverse;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* ==========================================
+   SECTIONS GENÉRICAS
+========================================== */
+.section { padding: 96px 0; }
+.section__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.section__tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cor-dourado);
+  border: 1px solid var(--cor-dourado-light);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 16px;
+}
+.section__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 16px;
+}
+.section__desc {
+  max-width: 520px;
+  margin: 0 auto;
+  color: var(--cor-texto-soft);
+  font-size: 0.95rem;
+}
+
+/* ==========================================
+   AULAS GRATUITAS
+========================================== */
+.aulas { background: var(--cor-fundo); }
+.aulas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.aula-card {
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--trans);
+  cursor: pointer;
+}
+.aula-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-media);
+  border-color: var(--cor-rose-light);
+}
+.aula-card__thumb {
+  height: 180px;
+  background: linear-gradient(135deg, var(--cor-rose-light), var(--cor-dourado-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  position: relative;
+}
+.aula-card__badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--cor-dourado);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+.aula-card__body { padding: 20px; }
+.aula-card__semana {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cor-rose);
+  margin-bottom: 6px;
+}
+.aula-card__titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: var(--cor-texto);
+}
+.aula-card__desc {
+  font-size: 0.82rem;
+  color: var(--cor-texto-soft);
+  line-height: 1.6;
+}
+.aulas__cta { text-align: center; }
+.aulas__cta p { color: var(--cor-texto-soft); margin-bottom: 16px; font-size: 0.9rem; }
+
+/* ==========================================
+   CURSOS
+========================================== */
+.cursos { background: var(--cor-fundo-2); }
+
+/* Filtros */
+.filtros {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.filtro {
+  padding: 8px 22px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--cor-borda);
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--cor-texto-soft);
+  transition: var(--trans);
+}
+.filtro:hover { border-color: var(--cor-rose); color: var(--cor-rose); }
+.filtro.active {
+  background: var(--cor-rose);
+  border-color: var(--cor-rose);
+  color: var(--cor-branco);
+  font-weight: 500;
+}
+
+/* Grid cursos */
+.cursos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 24px;
+}
+.curso-card {
+  background: var(--cor-branco);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--sombra-suave);
+  transition: var(--trans);
+  display: flex;
+  flex-direction: column;
+}
+.curso-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-media);
+}
+.curso-card[data-categoria="tecnica"] .curso-card__categoria { background: #e8d9bb; color: #7a5c1e; }
+.curso-card[data-categoria="nailart"] .curso-card__categoria { background: #f2dde0; color: #8b3a4a; }
+.curso-card[data-categoria="aperfeicoamento"] .curso-card__categoria { background: #dde8f2; color: #2c5282; }
+.curso-card[data-categoria="rosto"] .curso-card__categoria { background: #e8ddf2; color: #5c2c82; }
+
+.curso-card__img {
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5e8e0 0%, #ecddd6 100%);
+  position: relative;
+  overflow: hidden;
+}
+.curso-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.curso-card__categoria {
+  position: absolute;
+  bottom: 12px; right: 12px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  max-width: 160px;
+  text-align: center;
+  line-height: 1.4;
+}
+.curso-card__body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.curso-card__titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+.curso-card__desc {
+  font-size: 0.82rem;
+  color: var(--cor-texto-soft);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 16px;
+}
+.curso-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.curso-card__preco {
+  font-family: var(--fonte-body);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--cor-rose);
+}
+.curso-card__preco small { font-size: 0.75rem; color: var(--cor-texto-soft); font-family: var(--fonte-body); }
+.btn--card {
+  padding: 9px 20px;
+  font-size: 0.78rem;
+  background: var(--cor-texto);
+  color: var(--cor-branco);
+  border-radius: var(--radius-full);
+  transition: var(--trans);
+  white-space: nowrap;
+}
+.btn--card:hover { background: var(--cor-rose); transform: scale(1.03); }
+
+/* hidden por filtro */
+.curso-card.hidden { display: none; }
+
+/* ==========================================
+   SOBRE
+========================================== */
+.sobre { background: var(--cor-fundo); }
+.sobre__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.sobre__img-wrap {
+  position: relative;
+}
+.sobre__img-placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: linear-gradient(135deg, var(--cor-rose-light) 0%, var(--cor-dourado-light) 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: var(--cor-rose);
+}
+.sobre__texto p {
+  color: var(--cor-texto-soft);
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+.sobre__texto .section__title { text-align: left; }
+.sobre__texto .section__tag { margin-bottom: 12px; }
+.sobre__texto .btn { margin-top: 8px; }
+
+/* ==========================================
+   CONTACTO
+========================================== */
+.contacto { background: var(--cor-fundo-2); }
+.contacto__card {
+  background: var(--cor-branco);
+  border-radius: var(--radius-lg);
+  padding: 56px 48px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: var(--sombra-suave);
+  border: 1px solid var(--cor-borda);
+}
+.contacto__card p:not(.contacto__note) {
+  color: var(--cor-texto-soft);
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+}
+.contacto__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.contacto__note {
+  font-size: 0.75rem;
+  color: var(--cor-texto-soft);
+  opacity: 0.7;
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+.footer {
+  background: var(--cor-texto);
+  color: rgba(255,255,255,0.6);
+  padding: 40px 0 0;
+}
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 32px;
+}
+.footer .logo { color: rgba(255,255,255,0.8); }
+.footer .logo__symbol { color: var(--cor-dourado); }
+.footer__copy { font-size: 0.8rem; }
+.footer__social {
+  display: flex;
+  gap: 16px;
+}
+.footer__social a {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  transition: var(--trans);
+}
+.footer__social a:hover { color: var(--cor-rose); }
+.footer__legal {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer__legal-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+}
+.footer__legal-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer__legal-links a {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  transition: var(--trans);
+  letter-spacing: 0.02em;
+}
+.footer__legal-links a:hover { color: var(--cor-rose); }
+
+/* ==========================================
+   ANIMAÇÕES DE ENTRADA
+========================================== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================
+   POPUP CURSO
+========================================== */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 31, 26, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.popup {
+  background: var(--cor-branco);
+  border-radius: var(--radius-lg);
+  max-width: 640px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(45, 31, 26, 0.25);
+  transform: translateY(40px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--cor-rose-light) transparent;
+}
+.popup-overlay.active .popup {
+  transform: translateY(0) scale(1);
+}
+
+/* Imagem topo com gradiente sobreposto */
+.popup__hero {
+  position: relative;
+  height: 220px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--cor-rose-light), var(--cor-dourado-light));
+}
+.popup__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.popup__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(45,31,26,0.45) 100%);
+}
+.popup__hero-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 24px;
+  z-index: 2;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cor-dourado);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-family: var(--fonte-body);
+  font-weight: 500;
+}
+
+/* Botão fechar */
+.popup__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(4px);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-texto);
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: var(--trans);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+.popup__close:hover {
+  background: var(--cor-rose);
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* Conteúdo */
+.popup__content {
+  padding: 32px 40px 0;
+}
+.popup__titulo {
+  font-family: var(--fonte-display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--cor-texto);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.popup__desc {
+  color: var(--cor-texto-soft);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+/* Secções */
+.popup__section {
+  margin-bottom: 28px;
+}
+.popup__section-title {
+  font-family: var(--fonte-display);
+  font-size: 1.2rem;
+  color: var(--cor-texto);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.popup__section-title span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--cor-rose-light);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  color: var(--cor-rose);
+}
+
+/* Lista de conteúdos */
+.popup__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.popup__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--cor-texto);
+  line-height: 1.5;
+  transition: background 0.2s;
+}
+.popup__list li:hover {
+  background: var(--cor-fundo);
+}
+.popup__list li::before {
+  content: '✓';
+  min-width: 20px;
+  height: 20px;
+  background: var(--cor-rose);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+/* Info grid */
+.popup__info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.popup__info-item {
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+}
+.popup__info-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cor-texto-soft);
+  margin-bottom: 4px;
+}
+.popup__info-value {
+  font-family: var(--fonte-display);
+  font-size: 1.15rem;
+  color: var(--cor-texto);
+}
+
+/* Footer com preço e botão */
+.popup__footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid var(--cor-borda);
+  margin-top: 32px;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.popup__preco-wrap {}
+.popup__preco-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cor-texto-soft);
+  margin-bottom: 2px;
+}
+.popup__preco {
+  font-family: var(--fonte-body);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--cor-rose);
+  line-height: 1;
+}
+.popup__preco small {
+  font-size: 0.8rem;
+  color: var(--cor-texto-soft);
+  font-weight: 300;
+}
+
+
+/* ==========================================
+   BANNER COOKIES
+========================================== */
+.cookie-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 3000;
+  background: var(--cor-texto);
+  color: rgba(255,255,255,0.85);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+.cookie-banner.active { transform: translateY(0); }
+.cookie-banner__text {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  flex: 1;
+  min-width: 200px;
+}
+.cookie-banner__text a {
+  color: var(--cor-rose-light);
+  text-decoration: underline;
+}
+.cookie-banner__btns {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.cookie-btn-accept {
+  padding: 10px 22px;
+  background: var(--cor-rose);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--fonte-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.cookie-btn-accept:hover { background: #b87767; }
+.cookie-btn-reject {
+  padding: 10px 22px;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-full);
+  font-family: var(--fonte-body);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.cookie-btn-reject:hover {
+  border-color: rgba(255,255,255,0.6);
+  color: white;
+}
+@media (max-width: 600px) {
+  .cookie-banner { flex-direction: column; align-items: flex-start; }
+  .cookie-banner__btns { width: 100%; }
+  .cookie-btn-accept, .cookie-btn-reject { flex: 1; text-align: center; }
+}
+
+/* ==========================================
+   POPUP NEWSLETTER
+========================================== */
+.newsletter-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 31, 26, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.newsletter-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.newsletter-popup {
+  background: var(--cor-branco);
+  border-radius: var(--radius-lg);
+  max-width: 460px;
+  width: 100%;
+  padding: 48px 40px;
+  text-align: center;
+  box-shadow: 0 32px 80px rgba(45, 31, 26, 0.25);
+  transform: translateY(40px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+.newsletter-popup-overlay.active .newsletter-popup {
+  transform: translateY(0) scale(1);
+}
+.newsletter-popup__icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+.newsletter-popup__step {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cor-dourado);
+  border: 1px solid var(--cor-dourado-light);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 16px;
+}
+.newsletter-popup__title {
+  font-family: var(--fonte-display);
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--cor-texto);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.newsletter-popup__desc {
+  color: var(--cor-texto-soft);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.newsletter-popup__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 24px;
+  background: #25D366;
+  color: white;
+  border-radius: var(--radius-full);
+  font-family: var(--fonte-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: var(--trans);
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+}
+.newsletter-popup__btn:hover {
+  background: #1fb855;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45);
+}
+.newsletter-popup__btn svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
+  flex-shrink: 0;
+}
+.newsletter-popup__note {
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: var(--cor-texto-soft);
+  opacity: 0.7;
+}
+.newsletter-popup__close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--cor-fundo-2);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--cor-texto-soft);
+  transition: var(--trans);
+}
+.newsletter-popup__close:hover {
+  background: var(--cor-rose);
+  color: white;
+}
+
+/* ==========================================
+   MOBILE (max 768px)
+========================================== */
+@media (max-width: 768px) {
+  .section { padding: 72px 0; }
+
+  /* Nav mobile */
+  .nav {
+    position: fixed;
+    top: 0; right: -100%;
+    width: 80%; max-width: 320px;
+    height: 100svh;
+    background: var(--cor-branco);
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 32px;
+    gap: 28px;
+    box-shadow: -8px 0 40px rgba(0,0,0,0.1);
+    transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+    z-index: 200;
+  }
+  .nav.open { right: 0; }
+  .nav__link { font-size: 1.1rem; }
+  .nav__link--cta { padding: 12px 28px; }
+
+  .hamburger { display: flex; z-index: 300; }
+
+  /* Overlay quando nav aberto */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 150;
+  }
+  .nav-overlay.active { display: block; }
+
+  .hero__title { font-size: clamp(2.8rem, 12vw, 4rem); }
+  .hero__actions { gap: 12px; }
+  .hero__actions .btn { padding: 13px 24px; font-size: 0.85rem; }
+
+  .deco-circle--1 { width: 260px; height: 260px; top: -60px; right: -60px; }
+  .deco-circle--2 { width: 160px; height: 160px; }
+
+  .aulas__grid,
+  .cursos__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sobre__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .sobre__img-placeholder { max-height: 260px; }
+  .sobre__texto .section__title { font-size: 2rem; }
+
+  .contacto__card {
+    padding: 40px 24px;
+    border-radius: var(--radius-md);
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  .footer__legal {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  .footer__legal-links {
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  /* Popup mobile */
+  .popup { border-radius: var(--radius-md); max-height: 95vh; }
+  .popup__hero { height: 160px; border-radius: var(--radius-md) var(--radius-md) 0 0; }
+  .popup__content { padding: 24px 24px 0; }
+  .popup__titulo { font-size: 1.5rem; }
+  .popup__desc { margin-bottom: 20px; padding-bottom: 20px; }
+  .popup__info-grid { grid-template-columns: 1fr; }
+  .popup__footer { padding: 16px 24px; flex-direction: column; align-items: stretch; text-align: center; }
+  .popup__preco { font-size: 1.6rem; }
+}
+
+@media (max-width: 480px) {
+  .hero__content { padding: 24px 16px; }
+  .btn { padding: 12px 24px; font-size: 0.82rem; }
+}
+
+      </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <a href="#" class="logo">
+        <span class="logo__symbol">✦</span>
+        <span class="logo__text">Artista<br><em>Master Academy</em></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#contacto" class="nav__link">Aulas Gratuitas</a>
+        <a href="#cursos" class="nav__link">Cursos</a>
+        <a href="#sobre" class="nav__link">Sobre</a>
+        <a href="#cursos" class="nav__link nav__link--cta">Começar Agora</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Bem-vinda à</p>
+      <h1 class="hero__title">Artista Master<br><em>Academy</em></h1>
+      <p class="hero__sub">Aprende técnicas de unhas artificiais<br>do básico ao avançado, ao teu ritmo.</p>
+      <div class="hero__actions">
+        <a href="#contacto" class="btn btn--primary">Aulas Gratuitas</a>
+        <a href="#cursos" class="btn btn--ghost">Ver Cursos Online</a>
+      </div>
+    </div>
+    <div class="hero__deco">
+      <div class="deco-circle deco-circle--1"></div>
+      <div class="deco-circle deco-circle--2"></div>
+    </div>
+  </section>
+
+  <section class="section aulas" id="aulas">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__tag">Gratuito</span>
+        <h2 class="section__title">Aulas Semanais<br><em>Gratuitas</em></h2>
+        <p class="section__desc">Todas as semanas temos aulas em direto para te inspirar e ensinar. Sem custos, sem compromissos.</p>
+      </div>
+      <div class="aulas__cta">
+        <p>Não percas as próximas aulas!</p>
+        <a href="#contacto" class="btn btn--primary">Receber Notificações</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cursos" id="cursos">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__tag">Premium</span>
+        <h2 class="section__title">Cursos Online<br><em>Completos</em></h2>
+        <p class="section__desc">Mais de uma dezena de cursos criados com detalhe, do básico ao profissional. Aprende ao teu próprio ritmo, em qualquer lugar.</p>
+      </div>
+      <div class="filtros" id="filtros">
+        <button class="filtro active" data-filter="todos">Todos</button>
+        <button class="filtro" data-filter="tecnica">Aprender uma Técnica do Zero</button>
+        <button class="filtro" data-filter="nailart">Nail Art</button>
+        <button class="filtro" data-filter="aperfeicoamento">Aperfeiçoamento</button>
+        <button class="filtro" data-filter="rosto">Rosto</button>
+      </div>
+      <div class="cursos__grid" id="cursos-grid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sobre" id="sobre">
+    <div class="container sobre__inner">
+      <div class="sobre__visual">
+        <div class="sobre__img-wrap">
+          <img src="mariana.jpg" alt="Mariana" style="width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:32px;">
+        </div>
+      </div>
+      <div class="sobre__texto">
+        <span class="section__tag">A Criadora</span>
+        <h2 class="section__title">Paixão por<br><em>cada detalhe</em></h2>
+        <p>Sou Nail Artist profissional com mais de 10 anos de experiência. Criei a Artista Master Academy para levar o conhecimento que tenho a mulheres que sonham em transformar a sua paixão em profissão — ou simplesmente em fazer unhas incríveis para si mesmas.</p>
+        <p>Cada curso é desenhado com cuidado, com técnicas reais que uso no meu dia a dia.</p>
+        <a href="#cursos" class="btn btn--primary">Explorar Cursos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contacto" id="contacto">
+    <div class="container">
+      <div class="contacto__card">
+        <span class="section__tag">Comunidade</span>
+        <h2 class="section__title">Junta-te à<br><em>nossa comunidade</em></h2>
+        <p>Recebe as aulas gratuitas semanais e novidades sobre novos cursos diretamente no teu email e whatsapp.</p>
+        <form class="contacto__form" id="form-newsletter">
+          <input type="text" placeholder="O teu nome" class="input" id="input-nome" required />
+          <input type="email" placeholder="O teu email" class="input" id="input-email" required />
+          <label style="display:flex;align-items:flex-start;gap:10px;font-size:0.78rem;color:var(--cor-texto-soft);cursor:pointer;text-align:left;">
+            <input type="checkbox" id="input-rgpd" required style="margin-top:3px;accent-color:var(--cor-rose);flex-shrink:0;">
+            <span>Aceito receber comunicações da Artista Master Academy e concordo com a <a href="/privacidade" style="color:var(--cor-rose);">Política de Privacidade</a>.</span>
+          </label>
+          <button type="submit" class="btn btn--primary">Quero Entrar ✦</button>
+        </form>
+        <p class="contacto__note">Sem spam. Podes cancelar quando quiseres.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <a href="#" class="logo">
+          <span class="logo__symbol">✦</span>
+          <span class="logo__text">Artista<br><em>Master Academy</em></span>
+        </a>
+        <div class="footer__social">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="TikTok">TK</a>
+          <a href="#" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer__legal">
+        <p class="footer__legal-copy">© 2026 Artista Master Academy. Todos os direitos reservados.</p>
+        <div class="footer__legal-links">
+          <a href="/privacidade">Política de Privacidade</a>
+          <a href="/cookies">Política de Cookies</a>
+          <a href="/termos">Termos e Condições</a>
+          <a href="/aviso-legal">Aviso Legal</a>
+          <a href="https://www.livroreclamacoes.pt/Inicio/" target="_blank">📋 Livro de Reclamações</a>
+          <a href="https://ec.europa.eu/consumers/odr" target="_blank">Resolução de Litígios (ODR)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- BANNER COOKIES -->
+  <div class="cookie-banner" id="cookie-banner">
+    <p class="cookie-banner__text">
+      Usamos cookies essenciais para o funcionamento do site e Google Fonts para tipografia.
+      Ao continuar, aceitas o uso de cookies. <a href="/cookies">Saber mais</a>
+    </p>
+    <div class="cookie-banner__btns">
+      <button class="cookie-btn-reject" onclick="rejeitarCookies()">Rejeitar</button>
+      <button class="cookie-btn-accept" onclick="aceitarCookies()">Aceitar</button>
+    </div>
+  </div>
+
+  <script>
+const cursosData = [
+  {
+    id: 1,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20manicure%20macro%20e%20verniz%20de%20gel%20por%20favor",
+    titulo: "Manicure Macro + Verniz de Gel",
+    descricao: "Aprende a fazer uma manicure de alto padrão com acabamento profissional e verniz de gel duradouro. Do cuidado da cutícula à aplicação sem falhas.",
+    categoria: "tecnica",
+    preco: "69€",
+    imagem: "manicuremacro.png",
+    conteudos: [
+      "Fundamentos Essenciais (anatomia, higiene, biossegurança)",
+      "Química e Produtos (verniz gel, escolha de produtos)",
+      "Manicure Combinada Profissional (ponteiras, alicate, tesoura)",
+      "Preparação da Unha Natural (limpeza, adesiação)",
+      "Aplicação e Nivelamento de Verniz Gel (base, aplicação, top coat)"
+    ]
+  },
+  {
+    id: 2,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20unhas%20de%20gel%20PRO%20por%20favor",
+    titulo: "Programa Unhas de Gel PRO",
+    descricao: "O programa completo para dominares a técnica de unhas de gel do zero ao avançado. Preparação, escultura, limagem e manutenção.",
+    categoria: "tecnica",
+    preco: "97€",
+    imagem: "unhasdegelpro.png",
+    conteudos: [
+      "Fundamentos do gel: materiais e ferramentas",
+      "Preparação da unha natural",
+      "Técnicas de aplicação profissional",
+      "Alongamento e escultura em gel",
+      "Manutenção e reparação",
+      "Gestão de clientes e preçário"
+    ]
+  },
+  {
+    id: 3,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20unhas%20acrilicas%20PRO%20por%20favor",
+    titulo: "Programa Acrílico PRO",
+    descricao: "Domina o acrílico com precisão e técnica profissional. Aprende a trabalhar com moldes, tips e estruturas resistentes, a corrigir imperfeicões e a criar formatos que impressionam.",
+    categoria: "tecnica",
+    preco: "97€",
+    imagem: "acrilicopro.png",
+    conteudos: [
+      "Introdução ao acrílico: química e materiais",
+      "Técnica de escultura perfeita",
+      "Aplicação com moldes e tips",
+      "Formatos e estruturas profissionais",
+      "Resolução de problemas técnicos",
+      "Portfolio e marketing"
+    ]
+  },
+  {
+    id: 4,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20unhas%20de%20Acrigel%20PRO",
+    titulo: "Programa Acrigel PRO",
+    descricao: "A formação ideal para quem quer dominar a técnica de acrigel com excelência. Descobre como combinar o melhor do gel e do acrílico para criar unhas com mais resistência, flexibilidade e acabamento impecável.",
+    categoria: "tecnica",
+    preco: "97€",
+    imagem: "acrigelpro.png",
+    conteudos: [
+      "O que é acrigel e quando usar",
+      "Técnica de aplicação profissional",
+      "Alongamento e reforço estrutural",
+      "Comparação: gel vs acrílico vs acrigel",
+      "Casos práticos e troubleshooting",
+      "Rentabilização no salão"
+    ]
+  },
+  {
+    id: 5,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20unhas%20de%20Pedicure%20PRO",
+    titulo: "Curso Online de Pedicure Pro",
+    descricao: "10 aulas em que aprendes a executar uma pedicure profissional do início ao fim, com técnica, higiene e acabamento de salão.",
+    categoria: "tecnica",
+    preco: "97€",
+    imagem: "pedicure.png",
+    conteudos: [
+      "Qual o papel de uma Pedicure?",
+      "Anatomia e Fisiologia do Pé",
+      "Ferramentas e Produtos",
+      "Área de Trabalho",
+      "Anamnese",
+      "Técnicas de Pedicura",
+      "Massagem",
+      "Procedimentos de pedicure",
+      "Embelezamento",
+      "Curativos na Pedicure",
+      "Perguntas frequentes"
+    ]
+  },
+  {
+    id: 6,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Extensoes%20Soft%20Tips",
+    titulo: "Curso Online de Extensões Soft Tips",
+    descricao: "Mais de 10 aulas em que aprendes a dominar a aplicação, extensão, manutenção e remoção de soft tips.",
+    categoria: "tecnica",
+    preco: "49€",
+    imagem: "eso.png",
+    conteudos: [
+      "Introdução à Técnica",
+      "Aplicação da técnica",
+      "Remoção Total",
+      "Manutenção da técnica",
+      "Bónus: Nail Art de 5 minutos"
+    ]
+  },
+  {
+    id: 7,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20Floral",
+    titulo: "Curso Online de Nail Art Floral",
+    descricao: "10 aulas em que aprendes a criar flores delicadas e românticas diretamente nas unhas. Do traço fino às pinceladas livres, dominas técnicas que elevam qualquer trabalho a outro nível.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailartfloral.png",
+    conteudos: [
+      "Técnica de aquarela em unhas",
+      "Flores de traços finos",
+      "Rosas",
+      "Blooming flowers",
+      "Wet on Wet",
+      "One stroke inicial — BONUS"
+    ]
+  },
+  {
+    id: 8,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20do%20Dia%20dos%20namorados",
+    titulo: "Nail Art Dia dos Namorados",
+    descricao: "Nail arts apaixonantes para o Dia dos Namorados, com personagens icónicas e designs românticos que as tuas clientes vão querer reservar todos os anos.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailartnamorados.png",
+    conteudos: [
+      "Personagens icónicas temáticas",
+      "Corações e motivos românticos",
+      "Lettering e mensagens em unhas",
+      "Degradês em tons de rosa e vermelho",
+      "Acabamentos com glitter e brilho"
+    ]
+  },
+  {
+    id: 9,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20do%20Dia%20de%20Halloween",
+    titulo: "Nail Art Halloween",
+    descricao: "Mais de 25 aulas com personagens como Scooby-Doo e companhia para teres mais de 20 nail arts de Halloween para oferecer às tuas clientes.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailarthalloween.png",
+    conteudos: [
+      "Scooby-Doo, Família Addams, Mickey & Minnie, Frankenstein, Jack & Zero (Nightmare Before Christmas)",
+      "Abóboras, cupcakes, fantasmas, bruxas e muito mais",
+      "Misturas de cores e efeitos dark",
+      "Combinação de texturas",
+      "Acabamentos variados"
+    ]
+  },
+  {
+    id: 10,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20Iniciante",
+    titulo: "Nail Art Iniciante",
+    descricao: "Mais de 15 aulas que te ensinam as nail arts básicas de salão como efeitos espelho, rosas e babyboomer.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailartiniciante.png",
+    conteudos: [
+      "Efeitos espelho e efeito açúcar",
+      "Aplicações como flores secas, micropérolas, confettis e conchas partidas",
+      "Desenhos como flores, rosas e padrões animal print",
+      "Técnicas como puxados, blooming e babyboomer"
+    ]
+  },
+  {
+    id: 11,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20de%20Natal",
+    titulo: "Nail Art Natal",
+    descricao: "Designs festivos que as clientes procuram todos os anos. Aprende motivos natalícios únicos — flocos de neve, renas, estrelas e brilho — para te destacares na época mais especial do ano.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailartnatal.png",
+    conteudos: [
+      "Motivos natalícios clássicos e modernos",
+      "Flocos de neve e estrelas",
+      "Personagens de Natal",
+      "Glitter e efeitos festivos"
+    ]
+  },
+  {
+    id: 12,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20de%20arabescos",
+    titulo: "Nail Art de Arabescos + Degradês",
+    descricao: "Designs elegantes de degrads e elementos de arabescos para Nail Arts chamativas mas elegantes.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailartarabescos.png",
+    conteudos: [
+      "Técnicas Fundamentais de Degradê",
+      "Degradês Criativos",
+      "Preparação de fundos para Arabescos",
+      "Fundamentos dos Arabescos",
+      "Arabescos Avançados & Composição"
+    ]
+  },
+  {
+    id: 13,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Nail%20Art%20de%20outono",
+    titulo: "Nail Art de Outono",
+    descricao: "30 Nail arts com designs elegantes de degrads e elementos de Outono e personagens cute da época.",
+    categoria: "nailart",
+    preco: "49€",
+    imagem: "nailartoutono.png",
+    conteudos: [
+      "Folhas e elementos de Outono",
+      "Personagens relacionadas com o Outono como um Cogumelo bem cute",
+      "Conjuntos de 3 e 2 nail arts para diferentes conjuntos"
+    ]
+  },
+  {
+    id: 14,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Estrutura%2C%20formatos%20e%20limagem",
+    titulo: "Estrutura, Formatos e Limagem",
+    descricao: "Aprende os diferentes formatos de salão para poderes entregar elegança, resistência e estrutura às tuas clientes.",
+    categoria: "aperfeicoamento",
+    preco: "49€",
+    imagem: "formatos.png",
+    conteudos: [
+      "Fundamentos importantes",
+      "Corte e encaixe do molde",
+      "Limagem faseada",
+      "Formatos passo a passo"
+    ]
+  },
+  {
+    id: 15,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20biosseguran%C3%A7a%20e%20esteriliza%C3%A7%C3%A3o%20",
+    titulo: "Biossegurança e Esterilização",
+    descricao: "Aprende os perigos de um salão de beleza e os cuidados essenciais para garantir a tua saúde, a das tuas clientes e a qualidade do teu serviço.",
+    categoria: "aperfeicoamento",
+    preco: "49€",
+    imagem: "biosseguranca.png",
+    conteudos: [
+      "Principais métodos de esterilização disponíveis no mercado",
+      "Fundamentos práticos da biossegurança",
+      "Classificação e processos de limpeza profissional",
+      "Passo a passo dos instrumentos",
+      "Protocolos de proteção individual (EPIs)",
+      "Gestão de resíduos e protocolos de emergência",
+      "Organização do espaço de trabalho",
+      "Rotinas diárias e semanais",
+      "Biossegurança que vende"
+    ]
+  },
+  {
+    id: 16,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20Beautygram",
+    titulo: "Beautygram — Redes Sociais para Beleza",
+    descricao: "Aprende a gerir e planear as redes sociais do teu negócio de beleza para atrair mais clientes e aumentar as tuas reservas.",
+    categoria: "aperfeicoamento",
+    preco: "49€",
+    imagem: "beautygram.png",
+    conteudos: [
+      "Preparando o teu perfil para vender",
+      "Fotos que vendem",
+      "Estratégias de conteúdo",
+      "Cronograma e agendamento de conteúdo",
+      "Canva para beleza",
+      "250 Templates Beleza — BONUS"
+    ]
+  },
+  {
+    id: 17,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Dual%20Forms%20Pro",
+    titulo: "Curso Online de Dual Forms Pro",
+    descricao: "Aprende a usar dual forms de forma profissional para acelerar o teu trabalho em mesa incluindo a técnica revolucionária F1 Express.",
+    categoria: "aperfeicoamento",
+    preco: "49€",
+    imagem: "dualforms.png",
+    conteudos: [
+      "Fundamentos e diagnóstico",
+      "Preparação e adesão",
+      "As Bases dos Dual Forms",
+      "Estrutura básica e alongamento clássico",
+      "Encapsulados e design avançado",
+      "Pontas, correções e manutenção",
+      "Correção e transformação de unhas difíceis",
+      "F1 Express"
+    ]
+  },
+  {
+    id: 18,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Unhas%20sem%20Descolamentos",
+    titulo: "Curso Online de Unhas sem Descolamento",
+    descricao: "Descolamentos são um desafio comum, mas como lidar com eles? Este curso passo a passo dá-te o conhecimento para os entender, eliminar e ultrapassar.",
+    categoria: "aperfeicoamento",
+    preco: "49€",
+    imagem: "descolamentos.png",
+    conteudos: [
+      "Conhece os descolamentos",
+      "Tudo sobre Higienizadores",
+      "Tudo sobre Desidratadores",
+      "Tudo sobre Primers e Adesivadores/Bond",
+      "Fatores externos",
+      "Fatores internos dos levantamentos",
+      "Procedimento de atendimento"
+    ]
+  },
+  {
+    id: 19,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Lifting%20de%20Pestanas",
+    titulo: "Curso Online de Lifting de Pestanas",
+    descricao: "Aprende a criar olhares de destaque com este tratamento que deixa as pestanas naturais curvadas, realçadas e marcantes.",
+    categoria: "rosto",
+    preco: "49€",
+    imagem: "pestanas.png",
+    conteudos: [
+      "Diferença entre Lifting e Permanente de Pestanas",
+      "Cuidados de higiene",
+      "Patch Test: o que é e como realizar",
+      "Passo a passo — Permanente de Pestanas",
+      "Passo a passo — Lifting de Pestanas",
+      "Pintura de Pestanas",
+      "Finalização com Botox"
+    ]
+  },
+  {
+    id: 20,
+    link: "https://api.whatsapp.com/send?phone=351934212196&text=Ol%C3%A1%20Mariana%2C%20gostava%20de%20me%20inscrever%20no%20curso%20online%20de%20Laminacao%20de%20Sobrancelhas",
+    titulo: "Curso Online de Laminação de Sobrancelhas",
+    descricao: "Aprende a tratar as sobrancelhas das tuas clientes da forma que elas merecem — penteadas, com maior volume, pintadas e com os excessos removidos.",
+    categoria: "rosto",
+    preco: "49€",
+    imagem: "sobrancelhas.png",
+    conteudos: [
+      "Origem da Técnica",
+      "Cuidados de higiene",
+      "Patch Test: o que é e como realizar",
+      "Visagismo e Design de Sobrancelhas",
+      "Passo a Passo de Laminação de Sobrancelhas",
+      "Opções de Pintura",
+      "História da Henna",
+      "Passo a Passo de Pintura",
+      "Finalização"
+    ]
+  }
+];
+
+function renderCursos() {
+  const grid = document.getElementById("cursos-grid");
+  if (!grid) return;
+  grid.innerHTML = cursosData.map((curso) => `
+    <article class="curso-card fade-in" data-categoria="${curso.categoria}" data-id="${curso.id}">
+      <div class="curso-card__img">
+        <img src="${curso.imagem}" alt="${curso.titulo}">
+        <span class="curso-card__categoria">${labelCategoria(curso.categoria)}</span>
+      </div>
+      <div class="curso-card__body">
+        <h3 class="curso-card__titulo">${curso.titulo}</h3>
+        <p class="curso-card__desc">${curso.descricao}</p>
+        <div class="curso-card__footer">
+          <div class="curso-card__preco">${curso.preco}<small>/curso</small></div>
+          <button class="btn--card" onclick="verCurso(${curso.id})">Ver Curso</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function labelCategoria(cat) {
+  const mapa = { tecnica: "T\u00e9cnica do Zero", nailart: "Nail Art", aperfeicoamento: "Aperfei\u00e7oamento", rosto: "Rosto" };
+  return mapa[cat] || cat;
+}
+
+function initFiltros() {
+  const filtros = document.querySelectorAll(".filtro");
+  filtros.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filtros.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filtro = btn.dataset.filter;
+      document.querySelectorAll(".curso-card").forEach((card) => {
+        card.classList.toggle("hidden", filtro !== "todos" && card.dataset.categoria !== filtro);
+      });
+    });
+  });
+}
+
+function initMenu() {
+  const hamburger = document.getElementById("hamburger");
+  const nav = document.getElementById("nav");
+  const overlay = document.createElement("div");
+  overlay.className = "nav-overlay";
+  document.body.appendChild(overlay);
+  function abrirMenu() { hamburger.classList.add("open"); nav.classList.add("open"); overlay.classList.add("active"); document.body.style.overflow = "hidden"; }
+  function fecharMenu() { hamburger.classList.remove("open"); nav.classList.remove("open"); overlay.classList.remove("active"); document.body.style.overflow = ""; }
+  hamburger.addEventListener("click", () => nav.classList.contains("open") ? fecharMenu() : abrirMenu());
+  overlay.addEventListener("click", fecharMenu);
+  nav.querySelectorAll(".nav__link").forEach((link) => link.addEventListener("click", fecharMenu));
+}
+
+function initHeader() {
+  const header = document.querySelector(".header");
+  window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 40), { passive: true });
+}
+
+function initAnimacoes() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+  const mutationObs = new MutationObserver(() => {
+    document.querySelectorAll(".fade-in:not(.visible)").forEach((el) => observer.observe(el));
+  });
+  mutationObs.observe(document.body, { childList: true, subtree: true });
+}
+
+function initForm() {
+  const form = document.getElementById("form-newsletter");
+  if (!form) return;
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nome = document.getElementById("input-nome").value.trim();
+    const email = document.getElementById("input-email").value.trim();
+    if (!nome || !email) return;
+
+    // Enviar para o servidor (PHP esconde o destino final)
+    fetch("submit.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, email })
+    }).catch(() => {});
+
+    // Mostrar popup
+    mostrarPopupNewsletter(nome);
+
+    // Limpar formulário
+    form.reset();
+  });
+}
+
+function mostrarPopupNewsletter(nome) {
+  const popupHTML = `
+    <div class="newsletter-popup-overlay" id="newsletter-popup-overlay">
+      <div class="newsletter-popup">
+        <button class="newsletter-popup__close" onclick="fecharPopupNewsletter()">✕</button>
+        <div class="newsletter-popup__icon">🎉</div>
+        <span class="newsletter-popup__step">Último passo</span>
+        <h2 class="newsletter-popup__title">Inscrição quase<br><em>concluída!</em></h2>
+        <p class="newsletter-popup__desc">
+          Olá <strong>${nome}</strong>! Para receberes as aulas gratuitas todas as semanas, precisas de entrar no nosso grupo de WhatsApp.
+        </p>
+        <a href="https://chat.whatsapp.com/LJFvCNfIGVt2UxMO53PQ6D" target="_blank" class="newsletter-popup__btn" onclick="fecharPopupNewsletter()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Entrar no Grupo de WhatsApp
+        </a>
+        <p class="newsletter-popup__note">O grupo é gratuito. Podes sair quando quiseres.</p>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", popupHTML);
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("newsletter-popup-overlay").classList.add("active"), 10);
+
+  // Fechar ao clicar fora
+  document.getElementById("newsletter-popup-overlay").addEventListener("click", (e) => {
+    if (e.target.id === "newsletter-popup-overlay") fecharPopupNewsletter();
+  });
+}
+
+function fecharPopupNewsletter() {
+  const popup = document.getElementById("newsletter-popup-overlay");
+  if (!popup) return;
+  popup.classList.remove("active");
+  setTimeout(() => { popup.remove(); document.body.style.overflow = ""; }, 350);
+}
+
+function verCurso(id) {
+  const curso = cursosData.find((c) => c.id === id);
+  if (!curso) return;
+  const popupHTML = `<div class="popup-overlay" id="popup-overlay"><div class="popup"><button class="popup__close" id="popup-close">\u2715</button><div class="popup__hero"><img src="${curso.imagem}" alt="${curso.titulo}"><span class="popup__hero-badge">${labelCategoria(curso.categoria)}</span></div><div class="popup__content"><h2 class="popup__titulo">${curso.titulo}</h2><p class="popup__desc">${curso.descricao}</p><div class="popup__section"><h3 class="popup__section-title"><span>\u2726</span> Conte\u00fados da Forma\u00e7\u00e3o</h3><ul class="popup__list">${curso.conteudos.map(item => `<li>${item}</li>`).join("")}</ul></div><div class="popup__section"><h3 class="popup__section-title"><span>\u2726</span> Formato de Acesso</h3><div class="popup__info-grid"><div class="popup__info-item"><div class="popup__info-label">Formato</div><div class="popup__info-value">V\u00eddeo-aulas online dispon\u00edveis 24h/7</div></div><div class="popup__info-item"><div class="popup__info-label">Acesso</div><div class="popup__info-value">1 ano</div></div></div></div></div><div class="popup__footer"><div class="popup__preco-wrap"><div class="popup__preco-label">Valor de Inscri\u00e7\u00e3o (IVA inclu\u00eddo)</div><div class="popup__preco">${curso.preco}<small>/curso</small></div></div><a href="${curso.link}" target="_blank" class="btn btn--primary" id="popup-inscrever">Inscrever-me \u2726</a></div><p style="font-size:0.72rem;color:var(--cor-texto-soft);text-align:center;padding:0 40px 20px;line-height:1.5;">Ao inscrever-te aceitas os nossos <a href="/termos" style="color:var(--cor-rose);">Termos e Condições</a>, incluindo a renúncia ao direito de arrependimento para conteúdos digitais.</p></div></div>`;
+  document.body.insertAdjacentHTML("beforeend", popupHTML);
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("popup-overlay").classList.add("active"), 10);
+  document.getElementById("popup-close").addEventListener("click", fecharPopup);
+  document.getElementById("popup-overlay").addEventListener("click", (e) => { if (e.target.id === "popup-overlay") fecharPopup(); });
+  document.getElementById("popup-inscrever").addEventListener("click", fecharPopup);
+}
+
+function fecharPopup() {
+  const popup = document.getElementById("popup-overlay");
+  if (!popup) return;
+  popup.classList.remove("active");
+  setTimeout(() => { popup.remove(); document.body.style.overflow = ""; }, 350);
+}
+
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") fecharPopup(); });
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Marcar como carregado assim que o DOM estiver pronto
+  document.documentElement.classList.add("fonts-loaded");
+
+  renderCursos(); initFiltros(); initMenu(); initHeader(); initAnimacoes(); initForm();
+});
+
+// Fallback: mostrar a página mesmo que as fontes demorem
+setTimeout(() => {
+  document.documentElement.classList.add("fonts-loaded");
+}, 1500);
+  </script>
+</body>
+</html>
