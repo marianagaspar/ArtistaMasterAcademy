@@ -126,6 +126,6 @@ Zero dependências npm. Zero frameworks. Abre directamente no browser.
 
 <div align="center">
 
-Feito por [Artista Master Academy](https://www.artistanailpro.pt)
+Feito por Mariana Gaspar
 
 </div>
